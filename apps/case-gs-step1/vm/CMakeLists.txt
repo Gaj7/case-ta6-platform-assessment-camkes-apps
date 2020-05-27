@@ -84,6 +84,37 @@ function(MyAddExternalProjFilesToOverlay external_target external_install_dir ov
     endforeach()
 endfunction(MyAddExternalProjFilesToOverlay)
 
+find_program(CAKE NAMES cake32 cake PATHS "~/cake-x64-x32/" "/cake-x64-x32/" DOC "32-bit targeting CakeML compiler")
+if("${CAKE}" STREQUAL "CAKE-NOTFOUND")
+    message(FATAL_ERROR "Could not find a 32-bit targeting CakeML compiler. Please ensure cake32 is on the system path.")
+endif()
+
+ExternalProject_Add(
+    useram
+    SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/cakeml-am
+    BINARY_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/cakeml-am
+    INSTALL_COMMAND
+    ""
+    BUILD_ALWAYS
+    ON
+    EXCLUDE_FROM_ALL
+    CMAKE_ARGS
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_C_FLAGS=${BASE_C_FLAGS}
+        -DCAKE=${CAKE}
+)
+
+MyAddExternalProjFilesToOverlay(
+    useram
+    ${CMAKE_CURRENT_BINARY_DIR}/cakeml-am
+    overlay
+    "/root/useram"
+    FILES
+    groundstation
+)
+
 ExternalProject_Add(
     UxASGS
     GIT_REPOSITORY
@@ -191,4 +222,3 @@ CAmkESAddImportPath(${CMAKE_CURRENT_SOURCE_DIR}/${KernelARMPlatform}/)
 # DeclareCAmkESComponent(VM LIBS queue)
 
 CAmkESAddCPPInclude(${CAMKES_ARM_VM_DIR}/components/VM)
-

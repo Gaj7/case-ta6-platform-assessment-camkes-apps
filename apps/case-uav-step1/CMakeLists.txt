@@ -12,4 +12,6 @@ project(case-uav-step1 C)
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/vm)
 
+DeclareCAmkESComponent(AM_Gate SOURCES components/AM_Gate/am_gate.c)
+
 DeclareCAmkESRootserver(case-uav-step1.camkes)

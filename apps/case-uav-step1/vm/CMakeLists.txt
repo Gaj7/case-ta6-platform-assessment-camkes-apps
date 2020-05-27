@@ -85,6 +85,32 @@ function(MyAddExternalProjFilesToOverlay external_target external_install_dir ov
 endfunction(MyAddExternalProjFilesToOverlay)
 
 ExternalProject_Add(
+    useram
+    SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/cakeml-am
+    BINARY_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/cakeml-am
+    INSTALL_COMMAND
+    ""
+    BUILD_ALWAYS
+    ON
+    EXCLUDE_FROM_ALL
+    CMAKE_ARGS
+        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+        -DCMAKE_C_FLAGS=${BASE_C_FLAGS}
+        -DCAKE=${CAKE}
+)
+
+MyAddExternalProjFilesToOverlay(
+    useram
+    ${CMAKE_CURRENT_BINARY_DIR}/cakeml-am
+    overlay
+    "/root/useram"
+    FILES
+    uav
+)
+
+ExternalProject_Add(
     UxASUAV
     GIT_REPOSITORY
     https://github.com/loonwerks/case-ta6-experimental-platform-OpenUxAS.git
@@ -175,6 +201,7 @@ AddToFileServer("linux-initrd-vm-client" ${output_overlayed_rootfs_location} DEP
 AddToFileServer("linux" "${CAMKES_VM_IMAGES_DIR}/${KernelARMPlatform}/linux")
 
 DefineCAmkESVMFileServer()
+DeclareCAmkESComponent(VM SOURCES src/cross_vm_connections.c)
 
 CAmkESAddImportPath(${CMAKE_CURRENT_SOURCE_DIR}/${KernelARMPlatform}/)
 
@@ -186,4 +213,3 @@ CAmkESAddImportPath(${CMAKE_CURRENT_SOURCE_DIR}/${KernelARMPlatform}/)
 # DeclareCAmkESComponent(VM LIBS queue)
 
 CAmkESAddCPPInclude(${CAMKES_ARM_VM_DIR}/components/VM)
-
