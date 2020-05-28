@@ -186,6 +186,13 @@ AddFileToOverlayDir(
     overlay
 )
 
+AddFileToOverlayDir(
+    "S91useram"
+    ${CMAKE_CURRENT_SOURCE_DIR}/overlay_files/init_scripts/init.d/S91useram
+    "etc/init.d"
+    overlay
+)
+
 # Overwrite /etc/network/interfaces file.
 AddFileToOverlayDir(
     "interfaces"

@@ -28,6 +28,7 @@ null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
 ::sysinit:adduser uxas -H -D
 ::sysinit:chown -R uxas:uxas /home/uxas
 # now run any rc scripts
+::sysinit:chmod 755 /etc/init.d/S91useram
 ::sysinit:chmod 755 /etc/init.d/S98uxas
 ::sysinit:/etc/init.d/rcS
 

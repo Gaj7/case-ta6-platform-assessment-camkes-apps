@@ -84,6 +84,11 @@ function(MyAddExternalProjFilesToOverlay external_target external_install_dir ov
     endforeach()
 endfunction(MyAddExternalProjFilesToOverlay)
 
+find_program(CAKE NAMES cake32 cake PATHS "~/cake-x64-x32/" "/cake-x64-x32/" DOC "32-bit targeting CakeML compiler")
+if("${CAKE}" STREQUAL "CAKE-NOTFOUND")
+    message(FATAL_ERROR "Could not find a 32-bit targeting CakeML compiler. Please ensure cake32 is on the system path.")
+endif()
+
 ExternalProject_Add(
     useram
     SOURCE_DIR
@@ -172,6 +177,13 @@ AddFileToOverlayDir(
 AddFileToOverlayDir(
     "S98uxas"
     ${CMAKE_CURRENT_SOURCE_DIR}/overlay_files/init_scripts/init.d/S98uxas
+    "etc/init.d"
+    overlay
+)
+
+AddFileToOverlayDir(
+    "S91useram"
+    ${CMAKE_CURRENT_SOURCE_DIR}/overlay_files/init_scripts/init.d/S91useram
     "etc/init.d"
     overlay
 )
